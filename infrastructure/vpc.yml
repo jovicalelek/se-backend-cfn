@@ -16,3 +16,33 @@ Resources:
     Properties:
       VpcId: !Ref "VPC"
       InternetGatewayId: !Ref "InternetGateway"
+
+  # 2x Public Subnet, 2x Private Subnet
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref "VPC"
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs "" ]
+      MapPublicIpOnLaunch: true
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref "VPC"
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs "" ]
+      MapPublicIpOnLaunch: true
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref "VPC"
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs "" ]
+      MapPublicIpOnLaunch: false
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref "VPC"
+      CidrBlock: 10.0.4.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs "" ]
+      MapPublicIpOnLaunch: false

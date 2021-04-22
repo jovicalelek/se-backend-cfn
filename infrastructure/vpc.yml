@@ -91,3 +91,35 @@ Resources:
     Properties:
       SubnetId: !Ref "PublicSubnet2"
       RouteTableId: !Ref "PublicRouteTable"
+
+  # 2x Private RouteTable, 2x Route, 2x SubnetRouteTableAssociation
+  PrivateRouteTable1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref "VPC"
+  DefaultPrivateRoute1:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref "PrivateRouteTable1"
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref "NATGateway1"
+  PrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref "PrivateSubnet1"
+      RouteTableId: !Ref "PrivateRouteTable1"
+  PrivateRouteTable2:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref "VPC"
+  DefaultPrivateRoute2:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref "PrivateRouteTable2"
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref "NATGateway2"
+  PrivateSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref "PrivateSubnet2"
+      RouteTableId: !Ref "PrivateRouteTable2"

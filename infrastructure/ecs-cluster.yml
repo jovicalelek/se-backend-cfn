@@ -4,3 +4,5 @@ Description:
   Deploys an ECS cluster to the provided VPC and subnets using Fargate.
 
 Resources:
+  ECSCluster:
+    Type: AWS::ECS::Cluster

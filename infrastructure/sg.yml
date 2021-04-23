@@ -43,3 +43,12 @@ Resources:
       SecurityGroupIngress:
         - CidrIp: 0.0.0.0/0
           IpProtocol: -1
+
+Outputs:
+  FargateContainerSecurityGroup:
+    Description: A reference to the security group for ECS containers
+    Value: !Ref "FargateContainerSecurityGroup"
+
+  AppLoadBalancerSecurityGroup:
+    Description: A reference to the security group for the public facing application load balancer
+    Value: !Ref "AppLoadBalancerSecurityGroup"

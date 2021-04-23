@@ -6,12 +6,37 @@ Description:
   It deploys an Internet Gateway, with a default route on the public subnets.
   It deploys a pair of NAT Gateways (one in each AZ), and default routes for them in the private subnets.
 
+Parameters:
+  EnvironmentName:
+    Description: An environment name that will be prefixed to resource names
+    Type: String
+  VpcCIDR:
+    Description: Please enter the IP range (CIDR notation) for this VPC
+    Type: String
+    Default: 10.0.0.0/16
+  PublicSubnet1CIDR:
+    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+    Type: String
+    Default: 10.0.1.0/24
+  PublicSubnet2CIDR:
+    Description: Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone
+    Type: String
+    Default: 10.0.2.0/24
+  PrivateSubnet1CIDR:
+    Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
+    Type: String
+    Default: 10.0.3.0/24
+  PrivateSubnet2CIDR:
+    Description: Please enter the IP range (CIDR notation) for the private subnet in the second Availability Zone
+    Type: String
+    Default: 10.0.4.0/24
+
 Resources:
   # VPC, InternetGateway, VPCGatewayAttachment
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: 10.0.0.0/16
+      CidrBlock: !Ref "VpcCIDR"
   InternetGateway:
     Type: AWS::EC2::InternetGateway
   VPCGatewayAttachment:
@@ -25,28 +50,28 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref "VPC"
-      CidrBlock: 10.0.1.0/24
+      CidrBlock: !Ref "PublicSubnet1CIDR"
       AvailabilityZone: !Select [ 0, !GetAZs "" ]
       MapPublicIpOnLaunch: true
   PublicSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref "VPC"
-      CidrBlock: 10.0.2.0/24
+      CidrBlock: !Ref "PublicSubnet2CIDR"
       AvailabilityZone: !Select [ 1, !GetAZs "" ]
       MapPublicIpOnLaunch: true
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref "VPC"
-      CidrBlock: 10.0.3.0/24
+      CidrBlock: !Ref "PrivateSubnet1CIDR"
       AvailabilityZone: !Select [ 0, !GetAZs "" ]
       MapPublicIpOnLaunch: false
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref "VPC"
-      CidrBlock: 10.0.4.0/24
+      CidrBlock: !Ref "PrivateSubnet2CIDR"
       AvailabilityZone: !Select [ 1, !GetAZs "" ]
       MapPublicIpOnLaunch: false
 

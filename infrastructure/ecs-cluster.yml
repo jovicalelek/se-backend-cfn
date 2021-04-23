@@ -9,10 +9,10 @@ Parameters:
     Type: String
 
 Resources:
-  ECSCluster:
+  Cluster:
     Type: AWS::ECS::Cluster
 
 Outputs:
-  ECSCluster:
+  Cluster:
     Description: A reference to the ECS cluster
-    Value: !Ref "ECSCluster"
+    Value: !Ref "Cluster"

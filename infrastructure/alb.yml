@@ -4,3 +4,42 @@ Description:
   Deploys an Application Load Balancer that exposes our various ECS services.
 
 Resources:
+  # LoadBalancer, Listener, Default TargetGroup
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+#    DependsOn: VPCGatewayAttachment
+    Properties:
+      IpAddressType: ipv4
+      LoadBalancerAttributes:
+        - Key: idle_timeout.timeout_seconds
+          Value: 30
+      Scheme: internet-facing
+      SecurityGroups: [ !Ref "SecurityGroup" ]
+      Subnets: !Ref "Subnets"
+      Type: application
+
+  LoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn: [ LoadBalancer ]
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref "DefaultTargetGroup"
+          Type: forward
+      LoadBalancerArn: !Ref "LoadBalancer"
+      Port: 80
+      Protocol: HTTP
+
+  DefaultTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckEnabled: true
+      HealthCheckIntervalSeconds: 6
+      HealthCheckPath: /
+      HealthCheckPort: 80
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      Port: 80
+      Protocol: HTTP
+      UnhealthyThresholdCount: 2
+      VpcId: !Ref "VPC"

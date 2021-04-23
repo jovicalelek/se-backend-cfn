@@ -1,0 +1,6 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description:
+  Deploys an ECS cluster to the provided VPC and subnets using Fargate.
+
+Resources:

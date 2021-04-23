@@ -176,7 +176,7 @@ Resources:
 Outputs:
   VPC:
     Description: A reference to the created VPC
-    Value: !Ref VPC
+    Value: !Ref "VPC"
 
   PublicSubnets:
     Description: A list of the public subnets

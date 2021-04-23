@@ -23,3 +23,14 @@ Resources:
       GroupId: !Ref "FargateContainerSecurityGroup"
       IpProtocol: -1
       SourceSecurityGroupId: !Ref "FargateContainerSecurityGroup"
+
+  # This security group defines who is allowed to access the Application Load Balancer.
+  # By default, it's opened up to the public internet (0.0.0.0/0).
+  AppLoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the public facing load balancer that sits in front of ECS
+      VpcId: !Ref "VPC"
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1

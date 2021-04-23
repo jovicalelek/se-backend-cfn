@@ -4,3 +4,22 @@ Description:
   This template contains the security groups required by our entire stack.
 
 Resources:
+  # This security group defines who is allowed to access the ECS containers directly.
+  # By default it's just allowing access from the load balancer and from other members
+  # of the security group.
+  FargateContainerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the Fargate containers
+      # Allow inbound access to ECS from the ELB
+      SecurityGroupIngress:
+        IpProtocol: -1
+        SourceSecurityGroupId: !Ref "AppLoadBalancerSecurityGroup"
+      VpcId: !Ref "VPC"
+  # Allow inbound access to ECS from other members of the security group.
+  FargateContainerSecurityGroupIngressFromSelf:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref "FargateContainerSecurityGroup"
+      IpProtocol: -1
+      SourceSecurityGroupId: !Ref "FargateContainerSecurityGroup"

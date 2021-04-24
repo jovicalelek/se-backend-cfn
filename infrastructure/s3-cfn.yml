@@ -4,3 +4,8 @@ Description:
   This template deploys an S3 bucket for storing Cloudformation templates.
 
 Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Sub ${EnvironmentName} CFN Templates

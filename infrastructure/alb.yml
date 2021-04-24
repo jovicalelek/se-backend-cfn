@@ -1,11 +1,11 @@
 AWSTemplateFormatVersion: 2010-09-09
 
 Description:
-  Deploys an Application Load Balancer that exposes our various ECS services.
+  This template deploys an Application Load Balancer that exposes our various ECS services.
 
 Parameters:
   EnvironmentName:
-    Description: An environment name that will be prefixed to resource names
+    Description: An environment name that is prefixed to resource names
     Type: String
 
   VPC:
@@ -26,29 +26,34 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
 #    DependsOn: VPCGatewayAttachment
     Properties:
+      Name: !Ref EnvironmentName
       IpAddressType: ipv4
       LoadBalancerAttributes:
         - Key: idle_timeout.timeout_seconds
           Value: 30
       Scheme: internet-facing
-      SecurityGroups: [ !Ref "SecurityGroup" ]
-      Subnets: !Ref "Subnets"
+      Subnets: !Ref Subnets
+      SecurityGroups: [ !Ref SecurityGroup ]
       Type: application
 
   LoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     DependsOn: [ LoadBalancer ]
     Properties:
-      DefaultActions:
-        - TargetGroupArn: !Ref "DefaultTargetGroup"
-          Type: forward
-      LoadBalancerArn: !Ref "LoadBalancer"
+      LoadBalancerArn: !Ref LoadBalancer
       Port: 80
       Protocol: HTTP
+      DefaultActions:
+        - TargetGroupArn: !Ref DefaultTargetGroup
+          Type: forward
 
   DefaultTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
+      Name: !Sub ${EnvironmentName} Default
+      VpcId: !Ref VPC
+      Port: 80
+      Protocol: HTTP
       HealthCheckEnabled: true
       HealthCheckIntervalSeconds: 6
       HealthCheckPath: /
@@ -56,20 +61,17 @@ Resources:
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
-      Port: 80
-      Protocol: HTTP
       UnhealthyThresholdCount: 2
-      VpcId: !Ref "VPC"
 
 Outputs:
   LoadBalancer:
     Description: A reference to the Application Load Balancer
-    Value: !Ref "LoadBalancer"
+    Value: !Ref LoadBalancer
 
   LoadBalancerUrl:
     Description: The URL of the ALB
-    Value: !GetAtt "LoadBalancer.DNSName"
+    Value: !GetAtt LoadBalancer.DNSName
 
   Listener:
     Description: A reference to a port 80 listener
-    Value: !Ref "LoadBalancerListener"
+    Value: !Ref LoadBalancerListener

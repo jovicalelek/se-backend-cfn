@@ -12,6 +12,10 @@ Parameters:
     Description: Please provide the ECS Cluster ID that this service should run on
     Type: String
 
+  ServiceName:
+    Description: Service name
+    Type: String
+
   DesiredCount:
     Description: How many instances of this task should we run across our cluster?
     Type: Number
@@ -26,13 +30,18 @@ Parameters:
     Type: String
     Default: /
 
-  SecurityGroup:
-    Description: Select the Security Group to apply to this service
-    Type: AWS::EC2::SecurityGroup::Id
+  HealthCheckPath:
+    Description: The path for health checks on the targets
+    Type: String
+    Default: /
 
   Subnets:
     Description: Choose which subnets ECS service should be deployed to
     Type: List<AWS::EC2::Subnet::Id>
+
+  SecurityGroup:
+    Description: Select the Security Group to apply to this service
+    Type: AWS::EC2::SecurityGroup::Id
 
 Resources:
   Service:

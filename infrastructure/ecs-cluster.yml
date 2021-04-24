@@ -1,16 +1,18 @@
 AWSTemplateFormatVersion: 2010-09-09
 
 Description:
-  Deploys an ECS cluster to the provided VPC and subnets using Fargate.
+  This template deploys an ECS cluster to the provided VPC and subnets using Fargate.
 
 Parameters:
   EnvironmentName:
-    Description: An environment name that will be prefixed to resource names
+    Description: An environment name that is prefixed to resource names
     Type: String
 
 Resources:
   Cluster:
     Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Ref EnvironmentName
 
 Outputs:
   Cluster:

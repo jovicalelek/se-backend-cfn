@@ -3,6 +3,37 @@ AWSTemplateFormatVersion: 2010-09-09
 Description:
   Main template that deploys all infrastructure resources.
 
+Parameters:
+  VPC:
+    Description: The VPC that the ECS cluster is deployed to
+    Type: AWS::EC2::VPC::Id
+
+  Cluster:
+    Description: Please provide the ECS Cluster ID that this service should run on
+    Type: String
+
+  DesiredCount:
+    Description: How many instances of this task should we run across our cluster?
+    Type: Number
+    Default: 2
+
+  Listener:
+    Description: The Application Load Balancer listener to register with
+    Type: String
+
+  Path:
+    Description: The path to register with the Application Load Balancer
+    Type: String
+    Default: /
+
+  SecurityGroup:
+    Description: Select the Security Group to apply to this service
+    Type: AWS::EC2::SecurityGroup::Id
+
+  Subnets:
+    Description: Choose which subnets ECS Services should be deployed to this service
+    Type: List<AWS::EC2::Subnet::Id>
+
 Resources:
   Service:
     Type: AWS::ECS::Service

@@ -71,7 +71,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
+          Value: !Sub ${EnvironmentName}-public-subnet-az1
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
@@ -82,7 +82,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ2)
+          Value: !Sub ${EnvironmentName}-public-subnet-az2
 
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
@@ -93,7 +93,7 @@ Resources:
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Subnet (AZ1)
+          Value: !Sub ${EnvironmentName}-private-subnet-az1
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
@@ -104,7 +104,7 @@ Resources:
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Subnet (AZ2)
+          Value: !Sub ${EnvironmentName}-private-subnet-az2
 
   # 2x EIP, 2x NATGateway
   NATGateway1EIP:
@@ -138,7 +138,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Routes
+          Value: !Sub ${EnvironmentName}-public-routes
 
   DefaultPublicRoute:
     Type: AWS::EC2::Route
@@ -167,7 +167,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Routes (AZ1)
+          Value: !Sub ${EnvironmentName}-private-routes-az1
 
   DefaultPrivateRoute1:
     Type: AWS::EC2::Route
@@ -188,7 +188,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Routes (AZ2)
+          Value: !Sub ${EnvironmentName}private-routes-az2
 
   DefaultPrivateRoute2:
     Type: AWS::EC2::Route

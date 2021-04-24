@@ -4,8 +4,8 @@ Description:
   This template deploys an S3 bucket for storing Cloudformation templates.
 
 Parameters:
-  EnvironmentName:
-    Description: An environment name that is prefixed to resource names
+  BucketName:
+    Description: An S3 bucket name
     Type: String
 
 Resources:
@@ -13,7 +13,7 @@ Resources:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
     Properties:
-      BucketName: !Sub ${EnvironmentName} CFN Templates
+      BucketName: !Ref BucketName
 
 Outputs:
   S3Bucket:

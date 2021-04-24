@@ -24,6 +24,9 @@ Resources:
       SecurityGroupIngress:
         - SourceSecurityGroupId: !Ref AppLoadBalancerSecurityGroup
           IpProtocol: -1
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} ECS Containers
   # Allow inbound access to ECS from other members of the security group.
   FargateContainerSecurityGroupIngressFromSelf:
     Type: AWS::EC2::SecurityGroupIngress
@@ -42,6 +45,9 @@ Resources:
       SecurityGroupIngress:
         - CidrIp: 0.0.0.0/0
           IpProtocol: -1
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Public ALB
 
 Outputs:
   FargateContainerSecurityGroup:

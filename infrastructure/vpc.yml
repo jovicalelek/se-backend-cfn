@@ -58,8 +58,8 @@ Resources:
   VPCGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
-      InternetGatewayId: !Ref InternetGateway
       VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
 
   # 2x Public Subnet, 2x Private Subnet
   PublicSubnet1:

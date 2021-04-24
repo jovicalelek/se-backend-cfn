@@ -5,7 +5,7 @@ Description:
 
 Parameters:
   EnvironmentName:
-    Description: An environment name that will be prefixed to resource names
+    Description: An environment name that is prefixed to resource names
     Type: String
 
   VPC:
@@ -19,27 +19,26 @@ Resources:
   FargateContainerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
+      VpcId: !Ref VPC
       GroupDescription: Access to the Fargate containers
-      # Allow inbound access to ECS from the ELB
       SecurityGroupIngress:
-        IpProtocol: -1
-        SourceSecurityGroupId: !Ref "AppLoadBalancerSecurityGroup"
-      VpcId: !Ref "VPC"
+        - SourceSecurityGroupId: !Ref AppLoadBalancerSecurityGroup
+          IpProtocol: -1
   # Allow inbound access to ECS from other members of the security group.
   FargateContainerSecurityGroupIngressFromSelf:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
-      GroupId: !Ref "FargateContainerSecurityGroup"
+      GroupId: !Ref FargateContainerSecurityGroup
+      SourceSecurityGroupId: !Ref FargateContainerSecurityGroup
       IpProtocol: -1
-      SourceSecurityGroupId: !Ref "FargateContainerSecurityGroup"
 
   # This security group defines who is allowed to access the Application Load Balancer.
   # By default, it's opened up to the public internet (0.0.0.0/0).
   AppLoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
+      VpcId: !Ref VPC
       GroupDescription: Access to the public facing load balancer that sits in front of ECS
-      VpcId: !Ref "VPC"
       SecurityGroupIngress:
         - CidrIp: 0.0.0.0/0
           IpProtocol: -1
@@ -47,8 +46,8 @@ Resources:
 Outputs:
   FargateContainerSecurityGroup:
     Description: A reference to the security group for ECS containers
-    Value: !Ref "FargateContainerSecurityGroup"
+    Value: !Ref FargateContainerSecurityGroup
 
   AppLoadBalancerSecurityGroup:
     Description: A reference to the security group for the public facing application load balancer
-    Value: !Ref "AppLoadBalancerSecurityGroup"
+    Value: !Ref AppLoadBalancerSecurityGroup

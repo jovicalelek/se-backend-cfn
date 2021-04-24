@@ -48,8 +48,10 @@ Resources:
       Parameters:
         VPC: !GetAtt VPC.Outputs.VPC
         Cluster: !GetAtt ECS.Outputs.Cluster
+        ServiceName: nginx
         DesiredCount: 2
         Listener: !GetAtt ALB.Outputs.Listener
         Path: /
-        SecurityGroup: !GetAtt SecurityGroups.Outputs.FargateContainerSecurityGroup
+        HealthCheckPath: /
         Subnets: !GetAtt VPC.Outputs.PrivateSubnets
+        SecurityGroup: !GetAtt SecurityGroups.Outputs.FargateContainerSecurityGroup

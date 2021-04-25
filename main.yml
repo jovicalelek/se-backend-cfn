@@ -52,7 +52,7 @@ Resources:
         DesiredCount: 2
         ContainerImage: 712524022545.dkr.ecr.eu-west-2.amazonaws.com/strawberrye/report-service:latest
         Listener: !GetAtt ALB.Outputs.Listener
-        Path: /
-        HealthCheckPath: /
+        Path: /*
+        HealthCheckPath: /health
         Subnets: !GetAtt VPC.Outputs.PrivateSubnets
         SecurityGroup: !GetAtt SecurityGroups.Outputs.FargateContainerSecurityGroup

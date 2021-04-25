@@ -16,6 +16,10 @@ Parameters:
     Description: Service name
     Type: String
 
+  ContainerImage:
+    Description: Container image
+    Type: String
+
   DesiredCount:
     Description: How many instances of this task should we run across our cluster?
     Type: Number
@@ -57,7 +61,7 @@ Resources:
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 75
-      HealthCheckGracePeriodSeconds: 5
+      HealthCheckGracePeriodSeconds: 30
       LoadBalancers:
         - ContainerName: !Ref ServiceName
           ContainerPort: 80
@@ -81,7 +85,7 @@ Resources:
       ExecutionRoleArn: !Ref TaskExecutionRole
       ContainerDefinitions:
         - Name: !Ref ServiceName
-          Image: nginx
+          Image: !Ref ContainerImage
           PortMappings:
             - ContainerPort: 80
               Protocol: tcp
@@ -108,7 +112,7 @@ Resources:
       Protocol: HTTP
       TargetType: ip
       HealthCheckEnabled: true
-      HealthCheckIntervalSeconds: 6
+      HealthCheckIntervalSeconds: 30
       HealthCheckPath: !Ref HealthCheckPath
       HealthCheckPort: 80
       HealthCheckProtocol: HTTP

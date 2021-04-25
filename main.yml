@@ -41,15 +41,16 @@ Resources:
       Parameters:
         EnvironmentName: !Ref AWS::StackName
 
-  Service:
+  ReportService:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://se-backend-cfn-templates.s3.eu-west-2.amazonaws.com/services/service.yml
       Parameters:
         VPC: !GetAtt VPC.Outputs.VPC
         Cluster: !GetAtt ECS.Outputs.Cluster
-        ServiceName: nginx
+        ServiceName: report-service
         DesiredCount: 2
+        ContainerImage: 712524022545.dkr.ecr.eu-west-2.amazonaws.com/strawberrye/report-service:latest
         Listener: !GetAtt ALB.Outputs.Listener
         Path: /
         HealthCheckPath: /

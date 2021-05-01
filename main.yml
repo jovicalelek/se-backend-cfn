@@ -56,3 +56,12 @@ Resources:
         HealthCheckPath: /health
         Subnets: !GetAtt VPC.Outputs.PrivateSubnets
         SecurityGroup: !GetAtt SecurityGroups.Outputs.FargateContainerSecurityGroup
+
+  ReportSNS:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://se-backend-cfn-templates.s3.eu-west-2.amazonaws.com/infrastructure/report-sns.yml
+      Parameters:
+        EnvironmentName: !Ref AWS::StackName
+        TopicName: report.fifo
+        TopicDisplayName: report

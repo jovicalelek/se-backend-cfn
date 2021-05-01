@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 
 Description:
-  This template deploys an SNS service.
+  This template deploys a Report SNS service.
 
 Parameters:
   EnvironmentName:

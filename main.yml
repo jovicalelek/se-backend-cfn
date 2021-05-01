@@ -65,3 +65,11 @@ Resources:
         EnvironmentName: !Ref AWS::StackName
         TopicName: report.fifo
         TopicDisplayName: report
+
+  ReportSQS:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://se-backend-cfn-templates.s3.eu-west-2.amazonaws.com/infrastructure/report-sqs.yml
+      Parameters:
+        EnvironmentName: !Ref AWS::StackName
+        QueueName: report.fifo

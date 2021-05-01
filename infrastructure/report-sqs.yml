@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description:
+  This template deploys a Report SQS service.
+
+Parameters:
+  EnvironmentName:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+
+  QueueName:
+    Description: A name for the queue
+    Type: String
+
+Resources:
+  SQSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${EnvironmentName}-${QueueName}
+      FifoQueue: true
+      ContentBasedDeduplication: true

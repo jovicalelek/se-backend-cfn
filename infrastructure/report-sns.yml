@@ -9,7 +9,7 @@ Parameters:
     Type: String
 
   TopicName:
-    Description: The name of the topic
+    Description: A name for the topic
     Type: String
 
   TopicDisplayName:
@@ -24,3 +24,8 @@ Resources:
       DisplayName: !Sub ${EnvironmentName}-${TopicDisplayName}
       FifoTopic: true
       ContentBasedDeduplication: true
+
+Outputs:
+  SNSTopicARN:
+    Description: A reference to the SNS Topic ARN
+    Value: !Ref SNSTopic

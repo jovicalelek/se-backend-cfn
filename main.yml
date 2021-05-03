@@ -73,3 +73,4 @@ Resources:
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         QueueName: report.fifo
+        SNSTopicARN: !GetAtt ReportSNS.Outputs.SNSTopicARN

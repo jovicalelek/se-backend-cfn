@@ -12,6 +12,10 @@ Parameters:
     Description: A name for the queue
     Type: String
 
+  SNSTopicARN:
+    Description: The ARN of the topic to subscribe to
+    Type: String
+
 Resources:
   SQSQueue:
     Type: AWS::SQS::Queue
@@ -19,3 +23,27 @@ Resources:
       QueueName: !Sub ${EnvironmentName}-${QueueName}
       FifoQueue: true
       ContentBasedDeduplication: true
+
+  SNSSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: sqs
+      Endpoint: !GetAtt SQSQueue.Arn
+      TopicArn: !Ref SNSTopicARN
+
+  SQSQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: '*'
+            Action: [ SQS:SendMessage ]
+            Resource: !GetAtt SQSQueue.Arn
+            Condition:
+              ArnLike:
+                aws:SourceArn: !Ref SNSTopicARN
+      Queues:
+        - !Ref SQSQueue

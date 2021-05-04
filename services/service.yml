@@ -47,9 +47,14 @@ Parameters:
     Description: Select the Security Group to apply to this service
     Type: AWS::EC2::SecurityGroup::Id
 
-  SNSTopicARN:
-    Description: A reference to the SNS topic to publish messages to
+  TaskRole:
     Type: String
+    Default: ''
+    Description: (Optional) An IAM role to give the service's containers if the code within needs to
+                  access other AWS resources like S3 buckets, DynamoDB tables, etc
+
+Conditions:
+  HasCustomRole: !Not [ !Equals [!Ref TaskRole, ''] ]
 
 Resources:
   Service:
@@ -85,7 +90,11 @@ Resources:
       Cpu: 256
       Memory: 512
       ExecutionRoleArn: !Ref TaskExecutionRole
-      TaskRoleArn: !Ref TaskRole
+      TaskRoleArn:
+        Fn::If:
+          - 'HasCustomRole'
+          - !Ref 'TaskRole'
+          - !Ref "AWS::NoValue"
       ContainerDefinitions:
         - Name: !Ref ServiceName
           Image: !Ref ContainerImage
@@ -148,22 +157,3 @@ Resources:
             Action: [ sts:AssumeRole ]
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
-
-  TaskRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: [ ecs-tasks.amazonaws.com ]
-            Action: [ sts:AssumeRole ]
-      Policies:
-        - PolicyName: sqs-test
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action: [ SNS:Publish ]
-                Resource: !Ref SNSTopicARN

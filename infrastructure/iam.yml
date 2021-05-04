@@ -3,4 +3,40 @@ AWSTemplateFormatVersion: 2010-09-09
 Description:
   This template deploys roles for services.
 
+Parameters:
+  EnvironmentName:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+
+  ReportSNSTopicARN:
+    Description: A reference to the report SNS topic
+    Type: String
+
+  ReportSNSPublishTaskRolePolicyName:
+    Description: A name of a policy for publishing messages to the report SNS
+    Type: String
+
 Resources:
+  ReportSNSPublishTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ ecs-tasks.amazonaws.com ]
+            Action: [ sts:AssumeRole ]
+      Policies:
+        - PolicyName: !Sub ${EnvironmentName}-${ReportSNSPublishTaskRolePolicyName}
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: [ SNS:Publish ]
+                Resource: !Ref ReportSNSTopicARN
+
+Outputs:
+  ReportSNSPublishTaskRoleARN:
+    Description: A refernce to a role for publishing messages to the report SNS
+    Value: !Ref ReportSNSPublishTaskRole

@@ -47,6 +47,10 @@ Parameters:
     Description: Select the Security Group to apply to this service
     Type: AWS::EC2::SecurityGroup::Id
 
+  SNSTopicARN:
+    Description: A reference to the SNS topic to publish messages to
+    Type: String
+
 Resources:
   Service:
     Type: AWS::ECS::Service
@@ -81,6 +85,7 @@ Resources:
       Cpu: 256
       Memory: 512
       ExecutionRoleArn: !Ref TaskExecutionRole
+      TaskRoleArn: !Ref TaskRole
       ContainerDefinitions:
         - Name: !Ref ServiceName
           Image: !Ref ContainerImage
@@ -143,3 +148,22 @@ Resources:
             Action: [ sts:AssumeRole ]
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ ecs-tasks.amazonaws.com ]
+            Action: [ sts:AssumeRole ]
+      Policies:
+        - PolicyName: sqs-test
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: [ SNS:Publish ]
+                Resource: !Ref SNSTopicARN

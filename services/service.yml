@@ -56,12 +56,11 @@ Resources:
       LaunchType: FARGATE
       Cluster: !Ref Cluster
       TaskDefinition: !Ref TaskDefinition
-#      Role: !Ref ServiceRole
       DesiredCount: !Ref DesiredCount
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 75
-      HealthCheckGracePeriodSeconds: 30
+      HealthCheckGracePeriodSeconds: 60
       LoadBalancers:
         - ContainerName: !Ref ServiceName
           ContainerPort: 80
@@ -73,7 +72,6 @@ Resources:
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
-#    DependsOn: TaskExecutionRole
     Properties:
       RequiresCompatibilities:
         - FARGATE
@@ -112,7 +110,7 @@ Resources:
       Protocol: HTTP
       TargetType: ip
       HealthCheckEnabled: true
-      HealthCheckIntervalSeconds: 30
+      HealthCheckIntervalSeconds: 60
       HealthCheckPath: !Ref HealthCheckPath
       HealthCheckPort: 80
       HealthCheckProtocol: HTTP

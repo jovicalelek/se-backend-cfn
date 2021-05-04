@@ -56,7 +56,7 @@ Resources:
         HealthCheckPath: /health
         Subnets: !GetAtt VPC.Outputs.PrivateSubnets
         SecurityGroup: !GetAtt SecurityGroups.Outputs.FargateContainerSecurityGroup
-        SNSTopicARN: !GetAtt ReportSNS.Outputs.SNSTopicARN
+        TaskRole: !GetAtt IAM.Outputs.ReportSNSPublishTaskRoleARN
 
   ReportSNS:
     Type: AWS::CloudFormation::Stack
@@ -75,3 +75,12 @@ Resources:
         EnvironmentName: !Ref AWS::StackName
         QueueName: report.fifo
         SNSTopicARN: !GetAtt ReportSNS.Outputs.SNSTopicARN
+
+  IAM:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://se-backend-cfn-templates.s3.eu-west-2.amazonaws.com/infrastructure/iam.yml
+      Parameters:
+        EnvironmentName: !Ref AWS::StackName
+        ReportSNSTopicARN: !GetAtt ReportSNS.Outputs.SNSTopicARN
+        ReportSNSPublishTaskRolePolicyName: report-sns-publish

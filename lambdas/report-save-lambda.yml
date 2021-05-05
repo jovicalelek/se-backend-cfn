@@ -2,3 +2,63 @@ AWSTemplateFormatVersion: 2010-09-09
 
 Description:
   This template deploys a lambda which is triggered by the report SQS event and persists reports in DynamoDB.
+
+Parameters:
+  EnvironmentName:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+
+  FunctionName:
+    Description: The name of the Lambda function
+    Type: String
+
+  ReportSQSARN:
+    Description: A reference to the report SQS
+    Type: String
+
+Resources:
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ lambda.amazonaws.com ]
+            Action: [ sts:AssumeRole ]
+      Policies:
+        - PolicyName: !Sub ${EnvironmentName}-${FunctionName}-logs
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: [ logs:* ]
+                Resource: arn:aws:logs:*:*:*
+        - PolicyName: !Sub ${EnvironmentName}-${FunctionName}-sqs
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sqs:DeleteMessage
+                  - sqs:GetQueueAttributes
+                  - sqs:ReceiveMessage
+                Resource: arn:aws:sqs:*
+
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub ${EnvironmentName}-${FunctionName}
+      Code:
+        S3Bucket: dev-se-backend-lambdas-code
+        S3Key: report-save-lambda-1.0.0.jar
+      Handler: com.strawberrye.se.backend.reportsavelambda.ReportSQSEventHandler
+      Runtime: java11
+      Role: !GetAtt LambdaRole.Arn
+
+  LambdaEventSourceMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      FunctionName: !Ref LambdaFunction
+      EventSourceArn: !Ref ReportSQSARN

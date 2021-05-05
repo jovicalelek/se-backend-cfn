@@ -47,3 +47,8 @@ Resources:
                 aws:SourceArn: !Ref SNSTopicARN
       Queues:
         - !Ref SQSQueue
+
+Outputs:
+  SQSQueueARN:
+    Description: A reference to the SQS
+    Value: !GetAtt SQSQueue.Arn

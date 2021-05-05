@@ -91,3 +91,12 @@ Resources:
       TemplateURL: https://se-backend-cfn-templates.s3.eu-west-2.amazonaws.com/infrastructure/s3-lambdas.yml
       Parameters:
         BucketName: !Sub ${AWS::StackName}-lambdas-code
+
+  ReportSaveLambda:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://se-backend-cfn-templates.s3.eu-west-2.amazonaws.com/lambdas/report-save-lambda.yml
+      Parameters:
+        EnvironmentName: !Ref AWS::StackName
+        FunctionName: report-save
+        ReportSQSARN: !GetAtt ReportSQS.Outputs.SQSQueueARN

@@ -1,0 +1,4 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description:
+  This template deploys a lambda which is triggered by the report SQS event and persists reports in DynamoDB.

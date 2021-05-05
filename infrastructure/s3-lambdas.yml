@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description:
+  This template deploys an S3 bucket for storing lambdas code.
+
+Parameters:
+  BucketName:
+    Description: An S3 bucket name
+    Type: String
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref BucketName
+      VersioningConfiguration:
+        Status: Enabled
+
+Outputs:
+  S3Bucket:
+    Description: A reference to the S3 bucket
+    Value: !Ref S3Bucket

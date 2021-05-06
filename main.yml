@@ -50,7 +50,7 @@ Resources:
         Cluster: !GetAtt ECS.Outputs.Cluster
         ServiceName: report-service
         DesiredCount: 2
-        ContainerImage: 712524022545.dkr.ecr.eu-west-2.amazonaws.com/strawberrye/report-service:1.0.0
+        ContainerImage: 712524022545.dkr.ecr.eu-west-2.amazonaws.com/strawberrye/report-service:1.0.1
         Listener: !GetAtt ALB.Outputs.Listener
         Path: /*
         HealthCheckPath: /health

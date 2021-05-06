@@ -93,3 +93,11 @@ Resources:
         EnvironmentName: !Ref AWS::StackName
         FunctionName: report-save
         ReportSQSARN: !GetAtt ReportSQS.Outputs.SQSQueueARN
+
+  ReportDynamoDB:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://se-backend-cfn-templates.s3.eu-west-2.amazonaws.com/infrastructure/report-dynamo.yml
+      Parameters:
+        EnvironmentName: !Ref AWS::StackName
+        TableName: reports

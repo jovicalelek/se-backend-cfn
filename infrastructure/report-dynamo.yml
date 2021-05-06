@@ -1,0 +1,4 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description:
+  This template deploys a DynamoDB table for storing device reports.

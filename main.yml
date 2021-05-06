@@ -93,7 +93,7 @@ Resources:
         EnvironmentName: !Ref AWS::StackName
         FunctionName: report-save
         S3Bucket: dev-se-backend-lambdas-code
-        S3Key: report-save-lambda-1.0.0.jar
+        S3Key: report-save-lambda-1.0.1.jar
         ReportSQSARN: !GetAtt ReportSQS.Outputs.SQSQueueARN
 
   ReportDynamoDB:

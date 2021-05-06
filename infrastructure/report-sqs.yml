@@ -30,6 +30,7 @@ Resources:
       Protocol: sqs
       Endpoint: !GetAtt SQSQueue.Arn
       TopicArn: !Ref SNSTopicARN
+      RawMessageDelivery: true
 
   SQSQueuePolicy:
     Type: AWS::SQS::QueuePolicy

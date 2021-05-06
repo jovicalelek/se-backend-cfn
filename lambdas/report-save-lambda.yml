@@ -12,6 +12,14 @@ Parameters:
     Description: The name of the Lambda function
     Type: String
 
+  S3Bucket:
+    Description: An S3 bucket in which code is stored
+    Type: String
+
+  S3Key:
+    Description: The Amazon S3 key of the deployment package
+    Type: String
+
   ReportSQSARN:
     Description: A reference to the report SQS
     Type: String
@@ -51,8 +59,8 @@ Resources:
     Properties:
       FunctionName: !Sub ${EnvironmentName}-${FunctionName}
       Code:
-        S3Bucket: dev-se-backend-lambdas-code
-        S3Key: report-save-lambda-1.0.0.jar
+        S3Bucket: !Ref S3Bucket
+        S3Key: !Ref S3Key
       Handler: com.strawberrye.se.backend.reportsavelambda.ReportSQSEventHandler
       Runtime: java11
       Role: !GetAtt LambdaRole.Arn

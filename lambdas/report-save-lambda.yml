@@ -53,6 +53,14 @@ Resources:
                   - sqs:GetQueueAttributes
                   - sqs:ReceiveMessage
                 Resource: arn:aws:sqs:*
+        - PolicyName: !Sub ${EnvironmentName}-${FunctionName}-dynamodb
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:*
+                Resource: arn:aws:dynamodb:*
 
   LambdaFunction:
     Type: AWS::Lambda::Function

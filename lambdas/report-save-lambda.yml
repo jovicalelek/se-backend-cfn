@@ -71,6 +71,8 @@ Resources:
         S3Key: !Ref S3Key
       Handler: com.strawberrye.se.backend.reportsavelambda.ReportSQSEventHandler
       Runtime: java11
+      MemorySize: 512
+      Timeout: 30
       Role: !GetAtt LambdaRole.Arn
 
   LambdaEventSourceMapping:

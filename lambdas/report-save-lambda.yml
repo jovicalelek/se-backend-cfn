@@ -20,6 +20,10 @@ Parameters:
     Description: The Amazon S3 key of the deployment package
     Type: String
 
+  Handler:
+    Description: The name of the method that Lambda calls to execute the function
+    Type: String
+
   ReportSQSARN:
     Description: A reference to the report SQS
     Type: String
@@ -69,7 +73,7 @@ Resources:
       Code:
         S3Bucket: !Ref S3Bucket
         S3Key: !Ref S3Key
-      Handler: com.strawberrye.se.backend.reportsavelambda.ReportSQSEventHandler
+      Handler: !Ref Handler
       Runtime: java11
       MemorySize: 512
       Timeout: 30

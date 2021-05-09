@@ -110,6 +110,6 @@ Resources:
       TemplateURL: https://se-backend-cfn-templates.s3.eu-west-2.amazonaws.com/lambdas/aggregator-lambda.yml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
-        FunctionName: Aggregator
+        FunctionName: aggregator
         S3Bucket: dev-se-backend-lambdas-code
         S3Key: aggregator-lambda-1.0.0.jar

@@ -30,3 +30,10 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+
+Outputs:
+  DynamoDBTableStreamARN:
+    Description: A reference to the SQS
+    Value: !GetAtt DynamoDBTable.StreamArn

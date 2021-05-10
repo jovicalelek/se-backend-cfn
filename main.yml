@@ -113,6 +113,6 @@ Resources:
         EnvironmentName: !Ref AWS::StackName
         FunctionName: aggregator
         S3Bucket: dev-se-backend-lambdas-code
-        S3Key: aggregator-lambda-1.0.6.jar
+        S3Key: aggregator-lambda-1.0.8.jar
         Handler: com.strawberrye.se.backend.aggregatorlambda.ReportDynamoDBEventHandler
         ReportDynamoDBTableStreamARN: !GetAtt ReportDynamoDB.Outputs.DynamoDBTableStreamARN
